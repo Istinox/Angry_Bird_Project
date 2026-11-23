@@ -4,6 +4,9 @@
     <Platform Name="Win32" />
     <Platform Name="x64" />
   </Configurations>
+  <Project Path="Cyclone_Library/Cyclone.vcxproj" Id="a64426dc-5d9c-44b5-b15c-f2c68a3dbaae">
+    <Platform Solution="*|ARM64" Project="x64" />
+  </Project>
   <Project Path="Physic_Advanced_Project.vcxproj" Id="c0c7a13c-2cff-e9d3-3509-4ef7a1bf10cd">
     <BuildDependency Project="raylib.vcxproj" />
   </Project>
