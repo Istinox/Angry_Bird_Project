@@ -1,11 +1,10 @@
-#pragma once
-#include <iostream>
+#ifndef SIEGELAB_LIBRARY_GAME_H_
+#define SIEGELAB_LIBRARY_GAME_H_
+
 class Game
 {
 public:
-	void test()
-	{
-		std::cout << "bidule";
-	};
+	void Run();
 };
 
+#endif
