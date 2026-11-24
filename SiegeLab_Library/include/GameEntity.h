@@ -3,7 +3,7 @@
 class GameEntity
 {
 public:
-	virtual ~GameEntity() {};
+	virtual ~GameEntity() = default;
 	virtual void draw() {};
 };
 
