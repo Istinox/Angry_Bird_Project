@@ -14,7 +14,7 @@
   <Project Path="SiegeLab_Library/SiegeLab_Library.vcxproj" Id="1c083704-c457-4acb-9ed0-fdbbd74b4650">
     <Platform Solution="*|ARM64" Project="x64" />
   </Project>
-  <Project Path="Unitary_test/Unitary_test.vcxproj" Id="c331a65e-2227-40bb-896f-286aac7b5e16">
+  <Project Path="Unitary_test/Unitary_test.vcxproj" Id="6f03cec7-d398-4cbd-809e-9bc6851c193d" DisplayName="Unitary_Test">
     <Platform Solution="*|ARM64" Project="x64" />
   </Project>
 </Solution>
