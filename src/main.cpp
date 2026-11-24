@@ -13,6 +13,7 @@ by Jeffery Myers is marked with CC0 1.0. To view a copy of this license, visit h
 #include <Game.h>
 #include <core.h>
 
+
 int main ()
 {
 	Game test;
