@@ -2,18 +2,19 @@
 #include "EntityId.h"
 #include <cstddef>
 #include <vector>
-#include <memory>
 #include <functional>
-#include <stdexcept>
 #include <utility>
 
 template<typename T, std::size_t Capacity>
 class ObjectPool
 {
 public:
-	ObjectPool() : entitiesId(Capacity), entities(Capacity) {};
+	ObjectPool() : entitiesId(Capacity), entities(Capacity, nullptr) {};
+	~ObjectPool() { clear(); }
 
-	EntityId create(std::unique_ptr<T> value);
+	template<typename U = T, typename... Args>
+	EntityId create(Args&&... args);
+
 	T* get(EntityId id) const;
 	void destroy(EntityId id);
 	void forEach(const std::function<void(T&)>& func);
@@ -25,33 +26,31 @@ public:
 
 private:
 	std::vector<EntityId> entitiesId;
-	std::vector<std::unique_ptr<T>> entities;
+	std::vector<T*> entities;
 };
 
 template<typename T, std::size_t Capacity>
-inline EntityId ObjectPool<T, Capacity>::create(std::unique_ptr<T> value)
+template<typename U, typename... Args>
+inline EntityId ObjectPool<T, Capacity>::create(Args&&... args)
 {
-	if (!value) throw std::invalid_argument("Failed to create a new entity -> value is nullptr.");
-
 	for (std::size_t i = 0; i < Capacity; i++)
 	{
-		if (!entities[i])
-		{
-			entities[i] = std::move(value);
-			entitiesId[i].slot = static_cast<int>(i);
-			entitiesId[i].generation++;
-			return entitiesId[i];
-		}
+		if (entities[i]) continue;
+
+		entities[i] = new U(std::forward<Args>(args)...);
+		entitiesId[i].slot = static_cast<int>(i);
+		entitiesId[i].generation++;
+		return entitiesId[i];
 	}
 
-	throw std::out_of_range("failed to create a new entity -> pool is full.");
+	return EntityId{ -1, 0 };
 }
 
 template<typename T, std::size_t Capacity>
 inline T* ObjectPool<T, Capacity>::get(EntityId id) const
 {
 	// if (!isValid(id)) throw std::range_error("Failed to get an entity -> invalid handle.");
-	return isValid(id) ? entities[id.slot].get() : nullptr;
+	return isValid(id) ? entities[id.slot] : nullptr;
 }
 
 template<typename T, std::size_t Capacity>
@@ -59,7 +58,8 @@ inline void ObjectPool<T, Capacity>::destroy(EntityId id)
 {
 	if (!isValid(id)) return;
 
-	entities[id.slot].reset();
+	delete entities[id.slot];
+	entities[id.slot] = nullptr;
 }
 
 template<typename T, std::size_t Capacity>
@@ -75,8 +75,11 @@ inline void ObjectPool<T, Capacity>::forEach(const std::function<void(T&)>& func
 template<typename T, std::size_t Capacity>
 inline void ObjectPool<T, Capacity>::clear()
 {
-	for (auto& entity : entities)
-		entity.reset();
+	for (T*& entity : entities)
+	{
+		delete entity;
+		entity = nullptr;
+	}
 }
 
 template<typename T, std::size_t Capacity>
@@ -92,7 +95,7 @@ template<typename T, std::size_t Capacity>
 inline std::size_t ObjectPool<T, Capacity>::getSize() const
 {
 	std::size_t count = 0;
-	for (const auto& entity : entities)
+	for (const T* entity : entities)
 	{
 		if (entity)
 			++count;

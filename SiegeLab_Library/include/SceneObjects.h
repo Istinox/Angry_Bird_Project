@@ -1,9 +1,8 @@
 #pragma once
 #include <concepts>
+#include <cstddef>
 #include <utility>
 #include <vector>
-#include <memory>
-#include <cstddef>
 #include "GameEntity.h"
 #include "ObjectPool.h"
 
@@ -11,14 +10,14 @@
 template<typename T>
 concept GameEntityType = std::derived_from<T, GameEntity>;
 
-template<typename std::size_t MaxEntities>
+template<std::size_t MaxEntities>
 class SceneObjects
 {
 public:
 	template<GameEntityType T, typename... Args>
-	requires std::constructible_from<T, Args...> // Vérifie si la sous-classe T est constructible avec les arguments Args données.
+		requires std::constructible_from<T, Args...> // Vérifie si la sous-classe T est constructible avec les arguments Args données.
 	EntityId createEntity(Args&&... args) {
-		return objectPool.create(std::make_unique<T>(std::forward<Args>(args)...)); // "&&" = référence universelle.
+		return objectPool.template create<T>(std::forward<Args>(args)...); // "&&" = référence universelle.
 	}
 
 	GameEntity* get(EntityId id);

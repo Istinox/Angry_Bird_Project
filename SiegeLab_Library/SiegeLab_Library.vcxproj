@@ -160,8 +160,12 @@
     <ClInclude Include="include\ObjectPool.h" />
     <ClInclude Include="include\pch.h" />
     <ClInclude Include="include\SceneObjects.h" />
+    <ClInclude Include="include\Physics\PhysicsWorld.h" />
+    <ClInclude Include="include\Physics\PhysicsRegistration.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Physics\PhysicsRegistration.cpp" />
+    <ClCompile Include="src\Physics\PhysicsWorld.cpp" />
     <ClCompile Include="src\EntityId.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameEntity.cpp" />

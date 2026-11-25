@@ -2,9 +2,6 @@
 
 #include <gtest/gtest.h>
 
-#include <memory>
-#include <stdexcept>
-
 #include <include/ObjectPool.h>
 #include <include/SceneObjects.h>
 
@@ -12,11 +9,13 @@
 TEST(Pool, CapacityLimit)
 {
 	ObjectPool<int, 3> pool;
-	const EntityId a = pool.create(std::make_unique<int>(10));
-	const EntityId b = pool.create(std::make_unique<int>(20));
-	const EntityId c = pool.create(std::make_unique<int>(30));
+	const EntityId a = pool.create(10);
+	const EntityId b = pool.create(20);
+	const EntityId c = pool.create(30);
 
-	EXPECT_THROW(pool.create(std::make_unique<int>(40)), std::out_of_range);
+	const EntityId overflow = pool.create(40);
+	EXPECT_FALSE(pool.isValid(overflow));
+	EXPECT_EQ(pool.get(overflow), nullptr);
 
 	ASSERT_TRUE(pool.isValid(a));
 	ASSERT_TRUE(pool.isValid(b));
@@ -30,9 +29,9 @@ TEST(Pool, CapacityLimit)
 TEST(Pool, RecycledSlotChangesGeneration)
 {
 	ObjectPool<int, 1> pool;
-	const EntityId a = pool.create(std::make_unique<int>(7));
+	const EntityId a = pool.create(7);
 	pool.destroy(a);
-	const EntityId b = pool.create(std::make_unique<int>(42));
+	const EntityId b = pool.create(42);
 
 	EXPECT_EQ(a.slot, 0);
 	EXPECT_EQ(b.slot, 0);
@@ -42,9 +41,9 @@ TEST(Pool, RecycledSlotChangesGeneration)
 TEST(Pool, StaleHandleRejected)
 {
 	ObjectPool<int, 1> pool;
-	const EntityId a = pool.create(std::make_unique<int>(7));
+	const EntityId a = pool.create(7);
 	pool.destroy(a);
-	const EntityId b = pool.create(std::make_unique<int>(42));
+	const EntityId b = pool.create(42);
 
 	EXPECT_EQ(pool.get(a), nullptr);
 	ASSERT_NE(pool.get(b), nullptr);
@@ -54,12 +53,12 @@ TEST(Pool, StaleHandleRejected)
 TEST(Pool, LiveAddressStable)
 {
 	ObjectPool<int, 3> pool;
-	const EntityId a = pool.create(std::make_unique<int>(10));
+	const EntityId a = pool.create(10);
 	const int* p = pool.get(a);
 	ASSERT_NE(p, nullptr);
 
-	pool.create(std::make_unique<int>(20));
-	pool.create(std::make_unique<int>(30));
+	pool.create(20);
+	pool.create(30);
 
 	EXPECT_EQ(pool.get(a), p);
 	EXPECT_EQ(*pool.get(a), 10);
@@ -68,20 +67,23 @@ TEST(Pool, LiveAddressStable)
 TEST(Pool, ClearInvalidatesHandles)
 {
 	ObjectPool<int, 2> pool;
-	const EntityId a = pool.create(std::make_unique<int>(10));
-	const EntityId b = pool.create(std::make_unique<int>(20));
+	const EntityId a = pool.create(10);
+	const EntityId b = pool.create(20);
 
 	pool.clear();
 
 	EXPECT_FALSE(pool.isValid(a));
 	EXPECT_FALSE(pool.isValid(b));
-	EXPECT_EQ(pool.getSize(), 0);
+	EXPECT_EQ(pool.getSize(), 0u);
 
-	const EntityId c = pool.create(std::make_unique<int>(30));
+	const EntityId c = pool.create(30);
+	const EntityId d = pool.create(40);
 	ASSERT_NE(pool.get(c), nullptr);
+	ASSERT_NE(pool.get(d), nullptr);
 	EXPECT_EQ(*pool.get(c), 30);
+	EXPECT_EQ(*pool.get(d), 40);
 
-	// Les anciens ID restent invalides meme apres reutilisation d'un slot
+	// Les anciens ID restent invalides meme apres reutilisation des slots
 	EXPECT_FALSE(pool.isValid(a));
 	EXPECT_FALSE(pool.isValid(b));
 }
