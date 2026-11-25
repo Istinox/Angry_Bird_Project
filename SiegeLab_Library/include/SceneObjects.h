@@ -16,7 +16,7 @@ class SceneObjects
 {
 public:
 	template<GameEntityType T, typename... Args>
-	requires std::constructible_from<T, Args...>
+	requires std::constructible_from<T, Args...> // Vérifie si la sous-classe T est constructible avec les arguments Args données.
 	EntityId createEntity(Args&&... args) {
 		return objectPool.create(std::make_unique<T>(std::forward<Args>(args)...)); // "&&" = référence universelle.
 	}
