@@ -12,7 +12,7 @@ public:
 	ObjectPool() : entitiesId(Capacity), entities(Capacity, nullptr) {};
 	~ObjectPool() { clear(); }
 
-	template<typename U = T, typename... Args>
+	template<typename U = T, typename... Args> // U = T c'est simplement pour ajouter une valeur par défaut.
 	EntityId create(Args&&... args);
 
 	T* get(EntityId id) const;

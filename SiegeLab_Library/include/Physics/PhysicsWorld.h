@@ -19,8 +19,8 @@ public:
 	void unregisterObject(EntityId id);
 private:
 	std::vector<PhysicsRegistration> physicsRegistrations;
-	// template<std::size_t MaxEntities>
-	// SceneObjects<MaxEntities>* sceneObject = nullptr;
+	template<std::size_t MaxEntities>
+	static SceneObjects<MaxEntities>* sceneObject = nullptr;
 };
 
 template<std::size_t MaxEntities>
