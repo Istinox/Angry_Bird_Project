@@ -14,7 +14,7 @@ public:
 	ObjectPool() : entitiesId(Capacity), entities(Capacity) {};
 
 	EntityId create(std::unique_ptr<T> value);
-	const T* get(EntityId id) const;
+	T* get(EntityId id) const;
 	void destroy(EntityId id);
 	void forEach(const std::function<void(T&)>& func);
 	void clear();
@@ -48,7 +48,7 @@ inline EntityId ObjectPool<T, Capacity>::create(std::unique_ptr<T> value)
 }
 
 template<typename T, std::size_t Capacity>
-inline const T* ObjectPool<T, Capacity>::get(EntityId id) const
+inline T* ObjectPool<T, Capacity>::get(EntityId id) const
 {
 	// if (!isValid(id)) throw std::range_error("Failed to get an entity -> invalid handle.");
 	return isValid(id) ? entities[id.slot].get() : nullptr;

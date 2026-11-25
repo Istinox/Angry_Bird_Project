@@ -1,9 +1,14 @@
 #include "pch.h"
+
 #include <gtest/gtest.h>
+
 #include <memory>
 #include <stdexcept>
-#include <include/ObjectPool.h>
 
+#include <include/ObjectPool.h>
+#include <include/SceneObjects.h>
+
+// P01 - P05
 TEST(Pool, CapacityLimit)
 {
 	ObjectPool<int, 3> pool;
@@ -79,4 +84,22 @@ TEST(Pool, ClearInvalidatesHandles)
 	// Les anciens ID restent invalides meme apres reutilisation d'un slot
 	EXPECT_FALSE(pool.isValid(a));
 	EXPECT_FALSE(pool.isValid(b));
+}
+
+// GO01 (Presque fait), GO05, GO06 (Pas fait)
+
+TEST(SceneObjects, EntitiesFactoryCreatesDerivedTypes)
+{
+	class StandardProjectile : public GameEntity {};
+	class HeavyProjectile : public GameEntity {};
+
+	SceneObjects<4> scene;
+	const EntityId a = scene.createEntity<StandardProjectile>();
+	const EntityId b = scene.createEntity<HeavyProjectile>();
+
+	GameEntity* first = scene.get(a);
+	GameEntity* second = scene.get(b);
+
+	ASSERT_NE(first, nullptr);
+	ASSERT_NE(second, nullptr);
 }
