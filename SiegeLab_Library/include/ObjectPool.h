@@ -11,15 +11,17 @@ template<typename T, std::size_t Capacity>
 class ObjectPool
 {
 public:
-	ObjectPool() : entities(Capacity), entitiesId(Capacity) {};
+	ObjectPool() : entitiesId(Capacity), entities(Capacity) {};
 
 	EntityId create(std::unique_ptr<T> value);
-	const T& get(EntityId& id) const;
-	void destroy(EntityId& id);
+	const T* get(EntityId id) const;
+	void destroy(EntityId id);
 	void forEach(const std::function<void(T&)>& func);
 	void clear();
 
-	const bool isValid(EntityId id) const;
+	bool isValid(EntityId id) const;
+	std::size_t getSize() const;
+	bool isEmpty() const { return getSize() == 0; };
 
 private:
 	std::vector<EntityId> entitiesId;
@@ -29,7 +31,9 @@ private:
 template<typename T, std::size_t Capacity>
 inline EntityId ObjectPool<T, Capacity>::create(std::unique_ptr<T> value)
 {
-	for (size_t i = 0; i < Capacity; i++)
+	if (!value) throw std::invalid_argument("Failed to create a new entity -> value is nullptr.");
+
+	for (std::size_t i = 0; i < Capacity; i++)
 	{
 		if (!entities[i])
 		{
@@ -44,19 +48,18 @@ inline EntityId ObjectPool<T, Capacity>::create(std::unique_ptr<T> value)
 }
 
 template<typename T, std::size_t Capacity>
-inline const T& ObjectPool<T, Capacity>::get(EntityId& id) const
+inline const T* ObjectPool<T, Capacity>::get(EntityId id) const
 {
-	if (!isValid(id)) throw std::range_error("Failed to get an entity -> invalid handle.");
-	return *entities[id.slot];
+	// if (!isValid(id)) throw std::range_error("Failed to get an entity -> invalid handle.");
+	return isValid(id) ? entities[id.slot].get() : nullptr;
 }
 
 template<typename T, std::size_t Capacity>
-inline void ObjectPool<T, Capacity>::destroy(EntityId& id)
+inline void ObjectPool<T, Capacity>::destroy(EntityId id)
 {
 	if (!isValid(id)) return;
 
 	entities[id.slot].reset();
-	id.slot = -1;
 }
 
 template<typename T, std::size_t Capacity>
@@ -77,10 +80,22 @@ inline void ObjectPool<T, Capacity>::clear()
 }
 
 template<typename T, std::size_t Capacity>
-inline const bool ObjectPool<T, Capacity>::isValid(EntityId id) const
+inline bool ObjectPool<T, Capacity>::isValid(EntityId id) const
 {
 	return id.slot >= 0
 		&& static_cast<std::size_t>(id.slot) < Capacity
 		&& entities[id.slot]
 		&& entitiesId[id.slot].generation == id.generation;
+}
+
+template<typename T, std::size_t Capacity>
+inline std::size_t ObjectPool<T, Capacity>::getSize() const
+{
+	std::size_t count = 0;
+	for (const auto& entity : entities)
+	{
+		if (entity)
+			++count;
+	}
+	return count;
 }
