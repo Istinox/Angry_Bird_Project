@@ -1,49 +1,27 @@
 #pragma once
 #include "EntityId.h"
+
+#include <vector>
+
 #include <cyclone/body.h>
 #include <cyclone/collide_fine.h> // cyclone::CollisionSphere
+#include <cyclone/contacts.h>
+
 #include "PhysicsRegistration.h"
-#include <vector>
-#include <SceneObjects.h>
 
-using namespace cyclone;
-
-template<typename std::size_t MaxEntities>
 class PhysicsWorld
 {
 public:
-	void registerSphere(EntityId id, RigidBody& body, CollisionSphere& sphere);
-	void registerBox(EntityId id, RigidBody& body, CollisionBox& box);
-	void registerPlane(CollisionPlane& plane);
+	void registerSphere(EntityId id, cyclone::RigidBody& body, cyclone::CollisionSphere& sphere);
+	void registerBox(EntityId id, cyclone::RigidBody& body, cyclone::CollisionBox& box);
+	void registerPlane(cyclone::CollisionPlane& plane);
 	void step(double deltaTime);
 	void unregisterObject(EntityId id);
+
+	// Vérifie si la masse inversé est strictment positif / existante.
+	bool isRigidBodyValid(RigidBody* rigidBody) const;
+
 private:
-	std::vector<PhysicsRegistration> physicsRegistrations;
-	template<std::size_t MaxEntities>
-	static SceneObjects<MaxEntities>* sceneObject = nullptr;
+	std::vector<PhysicsRegistration> physicsRegistrations = {};
+	std::vector<cyclone::CollisionPlane> collisionPlanes = {};
 };
-
-template<std::size_t MaxEntities>
-inline void PhysicsWorld<MaxEntities>::registerSphere(EntityId id, RigidBody& body, CollisionSphere& sphere)
-{
-}
-
-template<std::size_t MaxEntities>
-inline void PhysicsWorld<MaxEntities>::registerBox(EntityId id, RigidBody& body, CollisionBox& box)
-{
-}
-
-template<std::size_t MaxEntities>
-inline void PhysicsWorld<MaxEntities>::registerPlane(CollisionPlane& plane)
-{
-}
-
-template<std::size_t MaxEntities>
-inline void PhysicsWorld<MaxEntities>::step(double deltaTime)
-{
-}
-
-template<std::size_t MaxEntities>
-inline void PhysicsWorld<MaxEntities>::unregisterObject(EntityId id)
-{
-}

@@ -1,10 +1,7 @@
-#ifndef SIEGELAB_LIBRARY_GAME_H_
-#define SIEGELAB_LIBRARY_GAME_H_
+#pragma once
 
 class Game
 {
 public:
 	void Run();
 };
-
-#endif

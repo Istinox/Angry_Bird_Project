@@ -5,6 +5,7 @@
 #include <vector>
 #include "GameEntity.h"
 #include "ObjectPool.h"
+#include "Physics/PhysicsRegistration.h"
 
 // Vérifie si la sous classe T est bien dérivé de GameEntity.
 template<typename T>

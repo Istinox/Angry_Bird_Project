@@ -8,8 +8,8 @@ using namespace cyclone;
 struct PhysicsRegistration
 {
 public:
-	EntityId id;
-	RigidBody* bodyPtr;
-	CollisionPrimitive* collisionPtr;
+	EntityId id								  = {};
+	cyclone::RigidBody* bodyPtr				  = nullptr;
+	cyclone::CollisionPrimitive* collisionPtr = nullptr;
 };
 
