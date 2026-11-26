@@ -4,6 +4,7 @@
 
 #include <include/ObjectPool.h>
 #include <include/SceneObjects.h>
+#include <include/Physics/PhysicsWorld.h>
 
 // P01 - P05
 TEST(Pool, CapacityLimit)
@@ -90,7 +91,7 @@ TEST(Pool, ClearInvalidatesHandles)
 
 // GO01 (Presque fait), GO05, GO06 (Pas fait)
 
-TEST(SceneObjects, EntitiesFactoryCreatesDerivedTypes)
+TEST(sceneObjects, EntitiesFactoryCreatesDerivedTypes)
 {
 	class StandardProjectile : public GameEntity {};
 	class HeavyProjectile : public GameEntity {};

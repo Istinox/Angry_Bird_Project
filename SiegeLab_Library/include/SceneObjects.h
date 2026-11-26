@@ -1,11 +1,14 @@
 #pragma once
+
 #include <concepts>
 #include <cstddef>
 #include <utility>
 #include <vector>
+
 #include "GameEntity.h"
 #include "ObjectPool.h"
 #include "Physics/PhysicsRegistration.h"
+#include "Physics/PhysicsWorld.h"
 
 // Vérifie si la sous classe T est bien dérivé de GameEntity.
 template<typename T>
@@ -28,6 +31,7 @@ public:
 
 private:
 	ObjectPool<GameEntity, MaxEntities> objectPool;
+	PhysicsWorld physicWorld;
 	std::vector<EntityId> pendingRemovals;
 };
 

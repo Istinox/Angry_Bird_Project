@@ -1,5 +1,5 @@
 #pragma once
-#include "EntityId.h"
+#include "../EntityId.h"
 
 #include <vector>
 
@@ -18,10 +18,10 @@ public:
 	void step(double deltaTime);
 	void unregisterObject(EntityId id);
 
-	// Vérifie si la masse inversé est strictment positif / existante.
+	// Vérifie si la masse inversé est strictement positif / existante.
 	bool isRigidBodyValid(RigidBody* rigidBody) const;
 
 private:
 	std::vector<PhysicsRegistration> physicsRegistrations = {};
-	std::vector<cyclone::CollisionPlane> collisionPlanes = {};
+	std::vector<cyclone::CollisionPlane*> collisionPlanes = {};
 };

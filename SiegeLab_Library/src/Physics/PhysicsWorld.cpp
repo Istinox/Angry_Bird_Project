@@ -9,7 +9,7 @@ void PhysicsWorld::registerSphere(EntityId id, cyclone::RigidBody& body, cyclone
 		.collisionPtr = &sphere
 	};
 
-	physicsRegistrations.push_back(physicRegistrationSphere);
+	physicsRegistrations[id.slot] = physicRegistrationSphere;
 }
 
 void PhysicsWorld::registerBox(EntityId id, cyclone::RigidBody& body, cyclone::CollisionBox& box)
@@ -21,12 +21,12 @@ void PhysicsWorld::registerBox(EntityId id, cyclone::RigidBody& body, cyclone::C
 		.collisionPtr = &box
 	};
 
-	physicsRegistrations.push_back(physicRegistrationBox);
+	physicsRegistrations[id.slot] = physicRegistrationBox;
 }
 
 void PhysicsWorld::registerPlane(cyclone::CollisionPlane& plane)
 {
-	collisionPlanes.push_back(plane);
+	collisionPlanes.push_back(&plane);
 }
 
 void PhysicsWorld::step(double deltaTime)
@@ -37,6 +37,7 @@ void PhysicsWorld::step(double deltaTime)
 			continue;
 		}
 
+		physics.bodyPtr->integrate(deltaTime);
 		// cycloneContactResolvers (??)
 	}
 }
