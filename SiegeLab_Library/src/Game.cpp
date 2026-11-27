@@ -8,28 +8,41 @@
 
 void Game::Run()
 {
-	// Tell the window to use vsync and work on high DPI displays
-	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
+    // Initialization
+    //--------------------------------------------------------------------------------------
+    const int screenWidth = 800;
+    const int screenHeight = 450;
 
-	// Create the window and OpenGL context
-	InitWindow(800, 600, "Hello Raylib");
+    InitWindow(screenWidth, screenHeight, "Project Angry bird");
 
-	// game loop
-	while (!WindowShouldClose())		// run the loop until the user presses ESCAPE or presses the Close button on the window
-	{
-		// drawing
-		BeginDrawing();
+    // Define the camera to look into our 3d world
+    Camera camera = { 0 };
+    camera.position = Vector3{ 0.0f, 10.0f, 10.0f };
+    camera.target = Vector3{ 0.0f, 0.0f, 0.0f };
+    camera.up = Vector3{ 0.0f, 1.0f, 0.0f };
+    camera.fovy = 45.0f;
+    camera.projection = CAMERA_PERSPECTIVE;
 
-		// Setup the back buffer for drawing (clear color and depth buffers)
-		ClearBackground(BLACK);
+    Vector3 cubePosition = { 0.0f, 0.0f, 0.0f };
 
-		// draw some text using the default font
-		DrawText("Hello Raylib", 200, 200, 20, WHITE);
+    SetTargetFPS(60);
+    while (!WindowShouldClose()) 
+    {
+        BeginDrawing();
+        ClearBackground(RAYWHITE);
 
-		// end the frame and get ready for the next one  (display frame, poll input, etc...)
-		EndDrawing();
-	}
+        BeginMode3D(camera);
 
-	// destroy the window and cleanup the OpenGL context
-	CloseWindow();
+        DrawCube(cubePosition, 2.0f, 2.0f, 2.0f, RED);
+        DrawCubeWires(cubePosition, 2.0f, 2.0f, 2.0f, MAROON);
+        DrawGrid(10, 1.0f);
+
+        EndMode3D();
+
+        DrawFPS(10, 10);
+
+        EndDrawing();
+    }
+
+    CloseWindow();
 }

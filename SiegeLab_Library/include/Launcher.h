@@ -10,6 +10,7 @@ public:
 
 	void aim(const InputController::InputLauncher& input);
 	ShotSettings shotSettings() const;
+
 private:
 	Vector3 origin;
 	float yaw	= 0.0f; // azimuth
