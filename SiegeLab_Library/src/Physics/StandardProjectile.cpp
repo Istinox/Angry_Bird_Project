@@ -11,7 +11,7 @@ void StandardProjectile::configurePhysics()
 	body.setMass(mass);
 	sphere.radius = radius;
 
-	const cyclone::real coeff = 0.4f * mass * radius * radius;
+	const cyclone::real coeff = 0.4f * mass * radius * radius; // I = 2/5 × masse × rayon²
 	cyclone::Matrix3 inertia;
 	inertia.setInertiaTensorCoeffs(coeff, coeff, coeff);
 	body.setInertiaTensor(inertia);
