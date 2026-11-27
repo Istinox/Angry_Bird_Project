@@ -160,8 +160,14 @@
     <ClInclude Include="include\ObjectPool.h" />
     <ClInclude Include="include\pch.h" />
     <ClInclude Include="include\SceneObjects.h" />
+    <ClInclude Include="include\Launcher.h" />
+    <ClInclude Include="include\ShotSettings.h" />
+    <ClInclude Include="include\InputController.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\InputController.cpp" />
+    <ClCompile Include="src\ShotSettings.cpp" />
+    <ClCompile Include="src\Launcher.cpp" />
     <ClCompile Include="src\EntityId.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameEntity.cpp" />
