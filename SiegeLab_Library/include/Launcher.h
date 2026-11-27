@@ -16,7 +16,7 @@ private:
 	float yaw	= 0.0f; // azimuth
 	float pitch = 0.0f; // elevation
 	float speed = 0.0f;
-	ProjectileKind projectileKind{ ProjectileKind::TypeA };
+	ProjectileKind projectileKind{ ProjectileKind::TypeStandard };
 
 	const float MIN_YAW   = -30.f;
 	const float MAX_YAW   = 30.f;

@@ -8,8 +8,8 @@ public:
         float yawAxis = 0.0f;
         float pitchAxis = 0.0f;
         float speedAxis = 0.0f;
-        bool selectTypeA = false;
-        bool selectTypeB = false;
+        bool selectTypeStandard = false;
+        bool selectTypeHeavy = false;
     };
 
 	float readAxis(int negativeKey, int positiveKey);

@@ -11,11 +11,11 @@ void Launcher::aim(const InputController::InputLauncher& input)
     pitch = Clamp(pitch + input.pitchAxis, MIN_PITCH, MAX_PITCH);
     speed = Clamp(speed + input.speedAxis, MIN_SPEED, MAX_SPEED);
 
-    if (input.selectTypeA) {
-        projectileKind = ProjectileKind::TypeA;
+    if (input.selectTypeStandard) {
+        projectileKind = ProjectileKind::TypeStandard;
     }
-    if (input.selectTypeB) {
-        projectileKind = ProjectileKind::TypeB;
+    if (input.selectTypeHeavy) {
+        projectileKind = ProjectileKind::TypeHeavy;
     }
 }
 

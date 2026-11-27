@@ -16,6 +16,6 @@ void InputController::capture()
 	inputLauncher.yawAxis = readAxis(KEY_A, KEY_D);
 	inputLauncher.pitchAxis = readAxis(KEY_S, KEY_W);
 	inputLauncher.speedAxis = readAxis(KEY_Q, KEY_E);
-	inputLauncher.selectTypeA = IsKeyPressed(KEY_ONE);
-	inputLauncher.selectTypeB = IsKeyPressed(KEY_TWO);
+	inputLauncher.selectTypeStandard = IsKeyPressed(KEY_ONE);
+	inputLauncher.selectTypeHeavy = IsKeyPressed(KEY_TWO);
 }
