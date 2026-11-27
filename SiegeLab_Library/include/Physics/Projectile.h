@@ -19,5 +19,7 @@ public:
 	void draw() override;
 	void registerPhysics(PhysicsWorld& world) override;
 	virtual void configurePhysics() = 0;
+
+	cyclone::CollisionSphere getCollisionSphere() const { return collisionSphere; }
 };
 
