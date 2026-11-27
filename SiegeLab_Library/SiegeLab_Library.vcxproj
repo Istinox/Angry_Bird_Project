@@ -119,7 +119,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;..\Cyclone\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include/StateMachine;$(ProjectDir)include;..\Cyclone\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -141,7 +141,7 @@
       <LanguageStandard>stdcpp20</LanguageStandard>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
-      <AdditionalIncludeDirectories>$(ProjectDir)include;..\Cyclone\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)include/StateMachine;$(ProjectDir)include;..\Cyclone\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -153,6 +153,10 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="include\StateMachine\GameStateMachine.h" />
+    <ClInclude Include="include\StateMachine\States\GameOverState.h" />
+    <ClInclude Include="include\StateMachine\Context.h" />
+    <ClInclude Include="include\StateMachine\IGameState.h" />
     <ClInclude Include="include\EntityId.h" />
     <ClInclude Include="include\framework.h" />
     <ClInclude Include="include\Game.h" />
@@ -160,8 +164,14 @@
     <ClInclude Include="include\ObjectPool.h" />
     <ClInclude Include="include\pch.h" />
     <ClInclude Include="include\SceneObjects.h" />
+    <ClInclude Include="include\StateMachine\States\StartState.h" />
+    <ClInclude Include="include\StateMachine\States\PlayingState.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\StateMachine\GameStateMachine.cpp" />
+    <ClCompile Include="src\StateMachine\States\GameOverState.cpp" />
+    <ClCompile Include="src\StateMachine\States\PlayingState.cpp" />
+    <ClCompile Include="src\StateMachine\IGameState.cpp" />
     <ClCompile Include="src\EntityId.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GameEntity.cpp" />
@@ -173,6 +183,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="src\SceneObjects.cpp" />
+    <ClCompile Include="src\StateMachine\States\StartState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Cyclone\Cyclone.vcxproj">
